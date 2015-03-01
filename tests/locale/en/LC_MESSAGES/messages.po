@@ -1,0 +1,11 @@
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)"
+
+msgid "test"
+msgstr "en: test"
+
+msgid "found %d error"
+msgid_plural "found %d errors"
+msgstr[0] "en: found %d error"
+msgstr[1] "en: found %d errors"
