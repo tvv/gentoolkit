@@ -19,7 +19,7 @@ packages = [
 
 setup(
     name='gentoolkit',
-    version='0.1',
+    version='0.1.1',
     description='General ToolKit',
     url='https://github.com/tvv/gentoolkit',
     author="vt",

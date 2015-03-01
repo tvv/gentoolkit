@@ -56,21 +56,21 @@ class L10n(object):
         """
         Домен по умолчанию
         """
-        return self.config.default_domain
+        return self.config['default_domain']
 
     @property
     def default_locale(self):
         """
         Локаль по умолчанию
         """
-        return self.config.default_locale
+        return self.config['default_locale']
 
     @property
     def default_tz(self):
         """
         Временная зона по умолчанию
         """
-        return pytz.FixedOffset(self.config.default_tz_offset)
+        return pytz.FixedOffset(self.config['default_tz_offset'])
 
     @property
     def lookup_dirs(self):
@@ -329,7 +329,7 @@ class L10n(object):
         """
         translation_dirs = self.build_dirs()
         if not domain:
-            domain = self.config.default_domain
+            domain = self.config['default_domain']
         locale = str(locale)
         translation = self.__translations[locale].get(domain, None)
         if not translation:
@@ -341,14 +341,14 @@ class L10n(object):
                 locales=[locale, ],
                 domain=domain)
             default_translation = \
-                self.__translations[self.config.default_locale].get(
+                self.__translations[self.config['default_locale']].get(
                     domain, None)
             if not default_translation:
                 default_translation = self.load(
                     translation_dirs,
-                    locales=[self.config.default_locale, ],
+                    locales=[self.config['default_locale'], ],
                     domain=domain)
-                self.__translations[self.config.default_locale][domain] = \
+                self.__translations[self.config['default_locale']][domain] = \
                     default_translation
             translation.add_fallback(default_translation)
             self.__translations[locale][domain] = translation
@@ -362,14 +362,14 @@ class L10n(object):
         """
         try:
             if not self.__lookup_dirs:
-                for d in self.config.sources.folders:
+                for d in self.config['sources']['folders']:
                     d = os.path.abspath(d)
                     if os.path.exists(d):
                         self.__lookup_dirs.append(d)
                     else:
                         logging.error(
                             "Translation directory [%s] not found", d)
-                for m in self.config.sources.modules:
+                for m in self.config['sources']['modules']:
                     for libpath in sys.path:
                         path = os.path.join(libpath, m[0], m[1])
                         if os.path.exists(path):
