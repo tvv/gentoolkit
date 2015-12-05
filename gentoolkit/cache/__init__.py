@@ -143,7 +143,7 @@ class Backend(object):
         raise NotConfigured(name)
 
     def __connect(self, name):
-        if name not in self.config:            
+        if name not in self.config:
             send_critical(
                 "cache_not_configured",
                 "configuration {} not found".format(name),

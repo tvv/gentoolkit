@@ -96,20 +96,24 @@ class Daemon(object):
         :return: Bool
         """
         if not self.config['daemonise']:
+            print colored_text("Daemonisation disabled", bcolors.WARNING)
             self.run()
             return True
-        if os.path.exists(self.config['pid']):
-            if self.is_running():
-                print colored_text(
-                    "Service already running [%d]" % self.pid, bcolors.WARNING)
-                return True
+        if self.is_running():
+            print colored_text(
+                "Service already running [%d]" % self.pid, bcolors.WARNING)
+            return True
+
+        # first fork
         try:
             pid = os.fork()
             if pid > 0:
                 for i in range(3):
                     if self.is_running():
                         print colored_text(
-                            "Service started", bcolors.OKGREEN)
+                            "Service started with pid {}".format(self.pid),
+                            bcolors.OKGREEN
+                        )
                         return True
                     time.sleep(1)
                 return False
@@ -145,6 +149,7 @@ class Daemon(object):
             logging.exception("Env configuration fail")
             os._exit(1)
 
+        # second fork
         try:
             pid = os.fork()
             if pid > 0:
@@ -283,13 +288,18 @@ class Daemon(object):
         :return: Bool
         """
         pid = self.pid
-        if pid and os.path.exists('/proc/%d/' % pid):
+        if not pid:
+            return False
+        try:
+            os.kill(pid, 0)
+        except OSError:
+            return False
+        else:
             return True
-        return False
 
     def write_pid(self):
         if self.config.get('pid', None):
-            try:            
+            try:
                 fd = open(self.config['pid'], "w+")
                 fd.write("%d" % os.getpid())
                 fd.close()

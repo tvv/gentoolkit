@@ -19,7 +19,7 @@ packages = [
 
 setup(
     name='gentoolkit',
-    version='0.1.1',
+    version='0.1.2',
     description='General ToolKit',
     url='https://github.com/tvv/gentoolkit',
     author="vt",
@@ -28,7 +28,7 @@ setup(
     install_requires=[
         'arrow>=0.4.4',
         'Babel>=1.3',
-        'pytz>=2014.9',
+        'pytz',
         'tornado>=4.0.2',
         'pylibmc>=1.3.0',
         'setproctitle>=1.1.8',

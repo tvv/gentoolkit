@@ -5,8 +5,8 @@ import time
 
 import nose.tools
 
-from gentoolkit import Profiler
-from gentoolkit import profile
+from gentoolkit.profiler import Profiler
+from gentoolkit.profiler import profile
 
 
 ADDRESS = ('127.0.0.1', 2004)
@@ -48,14 +48,6 @@ hostname = socket.gethostname()
 
 
 def test_profiler():
-    check_profiler()
-    check_profiler_context()
-    check_profiler_context_with_exc()
-    check_timer_context()
-    check_decorator()
-
-
-def check_profiler():
     """
     Добавление метрик вручную через метод `Profiler.append`.
     """
@@ -87,13 +79,13 @@ def check_profiler():
         else:
             nose.tools.ok_(
                 msg[0] in message_value,
-                "%s and %s" % (msg[0], message_value)    
+                "%s and %s" % (msg[0], message_value)
             )
             nose.tools.ok_(msg[1] == message_value[msg[0]])
     nose.tools.ok_(avg_found)
 
 
-def check_profiler_context():
+def test_profiler_context():
     """
     Использование контекста класса Profiler
     """
@@ -114,7 +106,7 @@ def check_profiler_context():
     nose.tools.ok_(int(msgs['%s.name1' % hostname][1]) == 1)
 
 
-def check_profiler_context_with_exc():
+def test_profiler_context_with_exc():
     """
     Исключения в контексте профейлера не скрываются, собранные метрики нормально уходят на сервер.
     """
@@ -139,7 +131,7 @@ def check_profiler_context_with_exc():
     nose.tools.ok_(int(msgs['%s.name1' % hostname][1]) == 1)
 
 
-def check_timer_context():
+def test_timer_context():
     """
     Контекст таймера
     """
@@ -161,7 +153,7 @@ def check_timer_context():
     nose.tools.ok_(float(msgs['%s.name1' % hostname][1]) >= 1)
 
 
-def check_decorator():
+def test_decorator():
     """
     Использование декоратора
     """

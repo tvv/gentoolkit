@@ -17,7 +17,7 @@ cfg = {
     "param2": "string",
     "param3": {
         "nest1": True,
-        "nest2": [1,2,3]
+        "nest2": [1, 2, 3]
     },
     "param4": {
         "nest1": [
@@ -55,7 +55,7 @@ def test_uninitialised():
         instance.get('param3.nest1')
 
     nose.tools.ok_(1 == instance.get('param1', 1))
-    nose.tools.ok_(True == instance.get('param3.nest1', True))
+    nose.tools.ok_(instance.get('param3.nest1', True))
 
     with nose.tools.assert_raises(AttributeError):
         instance['param1']
@@ -78,7 +78,7 @@ def test_initialised():
             instance.get('param100')
 
         nose.tools.ok_(1 == instance.get('param1'))
-        nose.tools.ok_(True == instance.get('param3.nest1'))
+        nose.tools.ok_(instance.get('param3.nest1'))
 
     instance = config.Config()
     instance.init(cfg_path)
@@ -86,7 +86,7 @@ def test_initialised():
 
     instance = config.Config()
     instance.init(cfg)
-    test_access(instance)    
+    test_access(instance)
 
 
 def test_proxy_uninitialised():
@@ -129,6 +129,6 @@ def test_proxy_initialised():
     with nose.tools.assert_raises(AttributeError):
         local_cfg.get('nest5')
 
-    nose.tools.ok_(True == local_cfg['nest1'])
+    nose.tools.ok_(local_cfg['nest1'])
     nose.tools.ok_(1 == local_cfg['nest2'][0])
     nose.tools.ok_('default' == local_cfg['nest4'])

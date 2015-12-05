@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import socket
-import threading
 import time
-import logging
-import json
-import signal
 import os
 
 import nose.tools
@@ -27,7 +22,7 @@ class DaemonA(services.Daemon):
 
 
 def test_deaemon():
-    logger.init("test_deaemon", debug=False, stdout=True)
+    logger.init("test_deaemon", debug=False, stdout=False)
     daemon = DaemonA()
     nose.tools.ok_(daemon.start())
     nose.tools.ok_(daemon.is_running())

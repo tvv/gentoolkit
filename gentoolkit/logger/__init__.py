@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
-import socket
 import logging
 import logging.handlers
-import simplejson as json
 
 from gentoolkit.config import Proxy
 from gentoolkit.config import get as config_get
@@ -17,7 +15,7 @@ service_name = None
 
 config = Proxy(
     {
-        'stdout': True,
+        'stdout': False,
         'format': "%%(asctime)s^%s^%%(message)s^%%(pathname)s:%%(lineno)s:%%(funcName)s",
         'event_format': "%(asctime)s %(message)s",
         'syslog': False,
@@ -62,8 +60,8 @@ def init(name, debug=False, stdout=False):
     Инициализация логгера
 
     :param string name: название сервиса
-    :param boolean debug: режим отладки по умолчанию
-    :param boolean stdout: вывод сообщений в консоль по умолчанию
+    :param boolean debug: режим отладки, по умолчанию True
+    :param boolean stdout: вывод сообщений в консоль STDOUT, по умолчанию False
     """
     global logger
     global service_name
@@ -72,8 +70,8 @@ def init(name, debug=False, stdout=False):
 
     service_name = name
 
-    debug = config_get('debug', debug)
-    stdout = config.get('stdout', stdout)
+    debug = True if debug else config_get('debug', debug)
+    stdout = True if stdout else config.get('stdout', stdout)
     log_level = logging.DEBUG if debug else logging.INFO
     rootLogger = logging.getLogger()
     rootLogger.setLevel(log_level)
@@ -92,8 +90,7 @@ def init(name, debug=False, stdout=False):
         handler.setFormatter(stdout_formatter)
         rootLogger.addHandler(handler)
 
-    if not stdout and not confi['syslog']:
-        # если все бекенды отключены, работает в тихом режиме
+    if not stdout and not config['syslog']:
         rootLogger.addHandler(logging.NullHandler())
 
     for name, level in config.get('levels', []):

@@ -34,8 +34,6 @@
 import json
 import os
 import logging
-import collections
-import copy
 
 
 __all__ = [
@@ -100,6 +98,12 @@ class Proxy(object):
         """
         return self.get(name)
 
+    def __getattr__(self, name):
+        """
+        Перегрузка доступа к атрибутам. Сначало преверяется глобальные настройки, потом значения по умолчанию.
+        """
+        return self.get(name)
+
     def __contains__(self, name):
         try:
             self.get(name)
@@ -111,7 +115,7 @@ class Proxy(object):
         return iter(self.get(self._config_prefix, self._defaults))
 
     def __repr__(self):
-        return "config.Proxy -> {}\n{}\nGlobal\n{}" % (
+        return "config.Proxy -> {}\n{}\nGlobal\n{}".format(
             self._config_prefix,
             self._defaults,
             get(self._config_prefix, default={})
@@ -175,7 +179,6 @@ class Config(object):
         """
         return get_path(self._data, path, default=default)
 
-
     def __getitem__(self, name):
         """
         Перегрузка доступа к атрибутам класса.
@@ -196,7 +199,7 @@ class Config(object):
         :return: Boolean
         """
         try:
-            v = self.get(name)
+            self.get(name)
             return True
         except AttributeError:
             return False
@@ -224,7 +227,7 @@ class Config(object):
 
 def get_path(data, path, default=notset):
     n = data
-    p = path.split('.')
+    p = path if isinstance(path, list) else path.split('.')
     while p:
         i = p.pop(0)
         if i not in n:
