@@ -8,8 +8,6 @@ from gentoolkit.config import get as config_get
 
 #: инстанс логгера по умолчанию
 logger = None
-#: инстанс логгера событий
-events_logger = None
 #: наименование сервиса
 service_name = None
 

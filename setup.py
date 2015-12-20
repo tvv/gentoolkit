@@ -11,15 +11,14 @@ packages = [
     'gentoolkit.l10n',
     'gentoolkit.logger',
     'gentoolkit.manhole',
-    'gentoolkit.models',
     'gentoolkit.profiler',
-    'gentoolkit.services',
+    'gentoolkit.services'
 ]
 
 
 setup(
     name='gentoolkit',
-    version='0.1.2',
+    version='0.2',
     description='General ToolKit',
     url='https://github.com/tvv/gentoolkit',
     author="vt",
